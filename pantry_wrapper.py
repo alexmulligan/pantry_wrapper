@@ -61,12 +61,12 @@ def _pantry_call(pantry_id: str, request_type: str, name: str=None, contents: di
 		
 
 def pantry_info(pantry_id: str, return_type: str=DEFAULT_RETURN_TYPE) -> Union[str, dict]:
-	"""returns info about the pantry"""
+	"""returns info about the pantry, including a list of baskets stored inside"""
 	return _pantry_call(pantry_id, request_type='GET', return_type=return_type)
 
 
 def get_contents(pantry_id: str, name: str, return_type: str=DEFAULT_RETURN_TYPE) -> Union[str, dict]:
-	"""returns contents of basket"""
+	"""returns full contents of basket"""
 	return _pantry_call(pantry_id, request_type='GET', name=name, return_type=return_type)
 
 
@@ -76,7 +76,7 @@ def create_basket(pantry_id: str, name: str, contents: dict, return_type: str=DE
 	
 
 def append_basket(pantry_id: str, name: str, contents: dict, return_type: str=DEFAULT_RETURN_TYPE) -> Union[str, dict]:
-	"""appends contents to new or existing basket; will overwrite existing values"""
+	"""appends contents to new or existing basket; will overwrite values of existing keys and append values to nested objects or arrays"""
 	return _pantry_call(pantry_id, request_type='PUT', name=name, contents=contents, return_type=return_type)
 
 

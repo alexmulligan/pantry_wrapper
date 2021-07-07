@@ -52,13 +52,137 @@ except:
 In this example, we made a call to the Pantry API to get the data stored in a basket called 'my_basket'.  For the ```get_contents()``` function, you only need your pantry id (get one [here](https://getpantry.cloud)) and the basket name.  However, here we explicity tell it to return the body of the response.  This will automatically convert the JSON data in the body from a string to a Python dict.  
 (See the Configuration part under Documentation for more information about the return type.)
 
-It's also worth noting that we use a try/except structure in our example code.  TODO: finish this part
+It's also worth noting that we use a try/except structure in our example code. pantry_wrapper purposely does not perform any error handling or response checking - this is because I believe it's simpler and more efficient to let the user handle errors, the way they want to handle them. If pantry_wrapper did more than just make API calls, error handling could be useful.  But right now, I think it's better to wrap the pantry_wrapper function in a try/except structure and handle errors however they should be handled for each program.
 
 <br>
 
 ### Functions
 
-TODO: write documentation for each function
+To better understand the calls these functions make, read through the [Pantry API Documentation](https://documenter.getpostman.com/view/3281832/SzmZeMLC) as well
+
+<br>
+
+pantry_info
+
+> returns info about the pantry, including a list of baskets stored inside
+
+Usage:
+
+```python
+pantry_info(pantry_id: str, return_type: str=DEFAULT_RETURN_TYPE) -> Union[str, dict]
+```
+
+Example:
+
+```python
+>>> pantry_info(my_pantry_id, return_type='body')
+{
+	'name': 'pantrydb',
+	'description': 'defaultDescription',
+	'errors': [],
+	'notifications': True,
+	'percentFull': 1,
+	'baskets': ['picnic']
+}
+```
+
+<br>
+
+get_contents
+
+> returns full contents of a basket
+
+Usage:
+
+```python
+get_contents(pantry_id: str, name: str, return_type: str=DEFAULT_RETURN_TYPE) -> Union[str, dict]
+```
+
+Example:
+
+```python
+>>> get_contents(my_pantry_id, 'my_basket', return_type='body')
+{
+	'first_name': 'John',
+	'last_name': 'Smith',
+	'age': 27,
+	'colors': ['blue', 'red', 'yellow']
+}
+```
+
+<br>
+
+create_basket
+
+> creates a new basket or replaces an existing one
+
+Usage:
+
+```python
+create_basket(pantry_id: str, name: str, contents: dict, return_type: str=DEFAULT_RETURN_TYPE) -> Union[str, dict]
+```
+
+Example:
+
+```python
+>>> data = {
+	'first_name': 'Izzy',
+	'last_name': 'Barnes',
+	'colors': ['orange']
+}
+
+>>> create_basket(my_pantry_id, 'my_other_basket', data, return_type='body')
+'Your Pantry was updated with basket: my_other_basket!'
+```
+
+<br>
+
+append_basket
+
+> appends contents to new or existing basket; will overwrite values of existing keys and append values to nested objects or arrays.  
+> returns the updated contents of the basket
+
+Usage:
+
+```python
+append_basket(pantry_id: str, name: str, contents: dict, return_type: str=DEFAULT_RETURN_TYPE) -> Union[str, dict]
+```
+
+Example:
+
+```python
+>>> data = {
+	'age': 24,
+	'colors': ['green', 'purple']
+}
+
+>>> append_basket(my_pantry_id, 'my_other_basket', data, return_type='body')
+{
+	'first_name': 'Izzy',
+	'last_name': 'Barnes',
+	'age': 24,
+	'colors': ['orange', 'green', 'purple']
+}
+```
+
+<br>
+
+delete_basket
+
+> deletes entire basket and its contents
+
+Usage:
+
+```python
+delete_basket(pantry_id: str, name: str, return_type: str=DEFAULT_RETURN_TYPE) -> Union[str, dict]
+```
+
+Example:
+
+```python
+>>> delete_basket(my_pantry_id, 'my_other_basket', return_type='body')
+'my_other_basket was removed from your Pantry!'
+```
 
 <br>
 
@@ -66,14 +190,21 @@ TODO: write documentation for each function
 
 There is actually only one option to configure - the return type for all the functions.
 
-There is a value defined at the top of the ```pantry_wrapper.py``` file, called ```DEFAULT_RETURN_TYPE``` which is normally defined as ```'response'```  
-This can either be 'response' or 'body'.  TODO: finish this part
+There is a value defined at the top of the ```pantry_wrapper.py``` file, called ```DEFAULT_RETURN_TYPE``` which is normally defined as 'response'. This can be defined as either 'body' or 'response'.
+
+'response' will return an entire Response object from the requests module.  From here, you can get the header, the body, the response code, etc.
+
+'body' will return the just the body of the response.  If the body is JSON, it will automatically convert the data and return a Python dict.  If not, it will just return the data as a string.
+
+If you want to globally change the return type, you can manually edit the ```pantry_wrapper.py``` file and change the ```DEFAULT_RETURN_TYPE``` value (at the top).
+
+If you want to specify the return type each time you call a function, you can pass the optional keyword argument ```return_type```.  Like before, this can either be 'response' or 'body', and it will change the return type for the current function.  To see this used, look at the code under the Quick Example section.
 
 <br>
 
 ## Contact
 
-Alexander Mulligan - alexjmulligan@gmail.com - [github.com/alexmulligan](https://github.com/alexmulligan)
+Alexander Mulligan - alexjmulligan@gmail.com - [<img alt="GitHub" src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white"/>](https://github.com/alexmulligan)
 
 Project Link: https://github.com/alexmulligan/pantry_wrapper
 
@@ -81,6 +212,6 @@ Project Link: https://github.com/alexmulligan/pantry_wrapper
 
 ## Acknowledgements
 
-Rohan Likhite - creator of Pantry - [github.com/imRohan](https://github.com/imRohan)
+Rohan Likhite - creator of Pantry - [<img alt="GitHub" src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white"/>](https://github.com/imRohan)
 
-Pantry - [Website](https://getpantry.cloud) - [Github](https://github.com/imRohan/Pantry)
+Pantry - [Website](https://getpantry.cloud) - [<img alt="GitHub" src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white"/>](https://github.com/imRohan/Pantry)
