@@ -4,7 +4,7 @@
 
 pantry_wrapper aims to cut down the code you need to make calls to the Pantry API.
 
-"Pantry is a free service that provides perishable data storage for small projects." Basically, it's a JSON-based database with an simple API. Learn more about Pantry [on their website](https://getpantry.cloud) and [on their GitHub page](https://github.com/imRohan/Pantry)
+"Pantry is a free data storage service which allows users to manage a collection of JSON objects." Learn more about Pantry [on their website](https://getpantry.cloud) and [on their GitHub page](https://github.com/imRohan/Pantry)
 
 It started as some functions I wrote for a personal project to get rid of repetitive code for API calls.  I wanted to package it up and publish the source so I could easily use it for future projects and so others could use it too.
 
@@ -28,7 +28,6 @@ Here's some ways you can install/use pantry_wrapper:
 
 * Clone this repository and include the ```pantry_wrapper.py``` file in your project's source directory
 * Clone this repository and copy the ```pantry_wrapper.py``` file to the ```site-packages``` folder of your Python installation to manually install it
-* PyPi package coming soon
 
 <br>
 
@@ -62,7 +61,7 @@ To better understand the calls these functions make, read through the [Pantry AP
 
 <br>
 
-pantry_info
+**pantry_info**
 
 > returns info about the pantry, including a list of baskets stored inside
 
@@ -88,7 +87,7 @@ Example:
 
 <br>
 
-get_contents
+**get_contents**
 
 > returns full contents of a basket
 
@@ -112,7 +111,7 @@ Example:
 
 <br>
 
-create_basket
+**create_basket**
 
 > creates a new basket or replaces an existing one
 
@@ -137,7 +136,7 @@ Example:
 
 <br>
 
-append_basket
+**append_basket**
 
 > appends contents to new or existing basket; will overwrite values of existing keys and append values to nested objects or arrays.  
 > returns the updated contents of the basket
@@ -167,7 +166,7 @@ Example:
 
 <br>
 
-delete_basket
+**delete_basket**
 
 > deletes entire basket and its contents
 
